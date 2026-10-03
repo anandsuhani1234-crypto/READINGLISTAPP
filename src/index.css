@@ -1,0 +1,128 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 33% 95%;
+    --foreground: 36 12% 25%;
+    --card: 42 35% 97%;
+    --card-foreground: 36 12% 25%;
+    --popover: 42 35% 97%;
+    --popover-foreground: 36 12% 25%;
+    --primary: 36 11% 28%;
+    --primary-foreground: 42 35% 96%;
+    --secondary: 40 24% 90%;
+    --secondary-foreground: 36 12% 28%;
+    --muted: 40 20% 91%;
+    --muted-foreground: 35 9% 48%;
+    --accent: 38 22% 88%;
+    --accent-foreground: 36 12% 28%;
+    --destructive: 12 45% 52%;
+    --destructive-foreground: 42 35% 96%;
+    --border: 38 18% 84%;
+    --input: 38 18% 84%;
+    --ring: 35 10% 45%;
+    --radius: 1rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-paper text-ink font-body antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: #e3d8c4;
+    color: #453f35;
+  }
+}
+
+/* ---------------------------------- */
+/*  Slow, gentle reveal on scroll      */
+/* ---------------------------------- */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 1.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1.8s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Soft cross-fade used for swapping breath phase labels */
+.fade-swap {
+  animation: fadeSwap 1.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes fadeSwap {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Ambient breathing halo in the hero — one full breath every ~14s */
+@keyframes breatheSlow {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.85;
+  }
+}
+
+.animate-breathe-slow {
+  animation: breatheSlow 14s ease-in-out infinite;
+}
+
+@keyframes driftSlow {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0);
+  }
+}
+
+.animate-drift-slow {
+  animation: driftSlow 11s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal,
+  .fade-swap,
+  .animate-breathe-slow,
+  .animate-drift-slow {
+    animation: none;
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+}
